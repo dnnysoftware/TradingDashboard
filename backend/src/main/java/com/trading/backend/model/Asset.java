@@ -1,4 +1,4 @@
-package com.trading.backend;
+package com.trading.backend.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

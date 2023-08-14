@@ -1,5 +1,5 @@
 package com.trading.backend;
 
-public class TradeController {
+public class TradingDashboard {
     
 }
