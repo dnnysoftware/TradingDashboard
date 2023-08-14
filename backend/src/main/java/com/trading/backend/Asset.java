@@ -50,6 +50,30 @@ public class Asset {
         this.stockType = stockType;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getTicker() {
+        return ticker;
+    }
+
+    public MarketSector getMarketSector() {
+        return marketSector;
+    }
+
+    public AssetType getAssetType() {
+        return assetType;
+    }
+
+    public StockType getStockType() {
+        return stockType;
+    }
+
 
 
 }
