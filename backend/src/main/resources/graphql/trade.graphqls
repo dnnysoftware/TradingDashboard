@@ -1,0 +1,26 @@
+type Trade {
+    id: ID!
+    price: Float!
+    timestamp: Int!
+    amountShares: Int!
+    tradeType: String!
+    orderType: String!
+    asset: Asset!
+    active: Boolean!
+}
+
+
+extend type Query {
+    tradesAll: [Trade]!
+    tradesYear: [Trade]!
+    tradesMonth: [Trade]!
+    tradesWeek: [Trade]!
+    tradesDay: [Trade]!
+    tradesByActive: [Trade]!
+    tradesByActiveCalculate: [Trade]!
+}
+
+extend type Mutation {
+    createTrade(price: Float!, timestamp: Int!, amountShares: Int!, tradeType: String!,  orderType: String!, asset: String!, active: Boolean!): Trade!
+}
+

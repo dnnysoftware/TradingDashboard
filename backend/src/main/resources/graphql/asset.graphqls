@@ -1,0 +1,20 @@
+type Asset {
+    id: ID!
+    name: String!
+    ticker: String!
+    marketSector: String!
+    assetType: String!
+    stockType: String!
+}
+
+
+type Query {
+    assetById(id: ID!): Asset!
+    assetsByName(name: String!): [Asset]!
+    assetsByTicker(ticker: String!): [Asset]!
+}
+
+type Mutation {
+    createAsset(name: String!, ticker: String!, marketSector: String!, assetType: String!, stockType: String!): Asset
+}
+
