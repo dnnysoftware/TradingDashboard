@@ -32,10 +32,10 @@ public class Mutation implements GraphQLMutationResolver {
     }
 
     @MutationMapping
-    public Trade createTrade(@Argument float price,@Argument int timestamp,@Argument int amountShares,@Argument String tradeType,@Argument String orderType,@Argument String asset, @Argument boolean active) {
+    public Trade createTrade(@Argument float price ,@Argument int amountShares,@Argument String tradeType,@Argument String orderType,@Argument String asset, @Argument boolean active) {
         Trade temp = new Trade(asset);
         Asset obj = getAsset(temp);
-        Trade trade = new Trade(price, timestamp, amountShares, tradeType, orderType, obj, active);
+        Trade trade = new Trade(price, amountShares, tradeType, orderType, obj, active);
         return tradeRepository.save(trade);
     }
 

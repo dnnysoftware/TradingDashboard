@@ -16,6 +16,10 @@ public class Asset {
     private String stockType;
 
 
+    public Asset() {
+    }
+
+
     public Asset(String name, String ticker, String marketSector, String assetType, String stockType) {
         this.name = name;
         this.ticker = ticker;

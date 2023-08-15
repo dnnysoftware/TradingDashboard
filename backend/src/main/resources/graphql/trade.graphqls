@@ -17,10 +17,10 @@ extend type Query {
     tradesWeek: [Trade]!
     tradesDay: [Trade]!
     tradesByActive: [Trade]!
-    tradesByActiveCalculate: [Trade]!
+    tradesByActiveCalculate: Float!
 }
 
 extend type Mutation {
-    createTrade(price: Float!, timestamp: Int!, amountShares: Int!, tradeType: String!,  orderType: String!, asset: String!, active: Boolean!): Trade!
+    createTrade(price: Float!, amountShares: Int!, tradeType: String!,  orderType: String!, asset: String!, active: Boolean!): Trade!
 }
 

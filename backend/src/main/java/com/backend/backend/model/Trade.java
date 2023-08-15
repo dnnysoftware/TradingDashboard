@@ -1,6 +1,6 @@
 package com.backend.backend.model;
 
-
+import java.time.Instant;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.annotation.Id;
 
@@ -22,18 +22,22 @@ public class Trade {
     private boolean active;
 
 
+    public Trade() {
+    }
+
+
     public Trade(String assetID) {
         this.assetID = assetID;
     }
 
-    public Trade(float price, int timestamp, int amountShares, String tradeType, String orderType, Asset asset, boolean active) {
+    public Trade(float price, int amountShares, String tradeType, String orderType, Asset asset, boolean active) {
         this.price = price;
-        this.timestamp = timestamp;
         this.amountShares = amountShares;
         this.tradeType = tradeType;
         this.orderType = orderType;
         this.asset = asset;
         this.active = active;
+        this.timestamp = (int) Instant.now().getEpochSecond();
     }
 
     public String getId() {
@@ -60,9 +64,6 @@ public class Trade {
         return timestamp;
     }
 
-    public void setTimestamp(int timestamp) {
-        this.timestamp = timestamp;
-    }
 
     public String getTradeType() {
         return tradeType;
