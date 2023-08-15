@@ -3,6 +3,7 @@ package com.backend.backend.resolver;
 import java.util.List;
 import java.util.Optional;
 import java.time.Instant;
+import com.backend.backend.model.TimeRange;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
@@ -18,24 +19,6 @@ import com.coxautodev.graphql.tools.GraphQLQueryResolver;
 
 @Controller
 public class Query implements GraphQLQueryResolver{
-
-
-    public enum TimeRange {
-    YEAR(31536000),
-    MONTH(2628288),
-    WEEK(604800),
-    DAY(86400);
-
-    private final int seconds;
-
-    TimeRange(int seconds) {
-        this.seconds = seconds;
-    }
-
-    public int getSeconds() {
-        return seconds;
-    }
-}
 
 
     private AssetRepository assetRepository;
@@ -108,16 +91,10 @@ public class Query implements GraphQLQueryResolver{
     }
 
     @QueryMapping
-    public float tradesByActiveCalculate() {
-        List<Trade> activeTrades = tradeRepository.findActiveTradesWithFields();
-        float summedValue = 0;
-        for (Trade trade : activeTrades) {
-            summedValue += trade.getPrice() * trade.getAmountShares();
-        }
-        return summedValue;
+    public Float tradesByActiveCalculate() {
+        return tradeRepository.calculateSummedValueForActiveTrades();
     }
 
-    
 
 
 

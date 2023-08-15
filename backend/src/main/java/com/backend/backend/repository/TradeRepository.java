@@ -2,6 +2,7 @@ package com.backend.backend.repository;
 
 import java.util.List;
 
+import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
@@ -16,7 +17,10 @@ public interface TradeRepository extends MongoRepository<Trade, String> {
     @Query("{'active': true}")
     List<Trade> findActiveTrades();
 
-    @Query(value = "{'active': true}", fields = "{ '_id': 0, 'price': 1, 'amountShares': 1 }")
-    List<Trade> findActiveTradesWithFields();
+    @Aggregation(pipeline = {
+        "{ $match: { active: true } }",
+        "{ $project: { _id: 0, value: { $multiply: ['$price', '$amountShares'] } } }",
+        "{ $group: { _id: null, summedValue: { $sum: '$value' } } }"})
+    Float calculateSummedValueForActiveTrades();
 
 }
