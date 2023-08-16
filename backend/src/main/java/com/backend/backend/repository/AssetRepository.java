@@ -15,4 +15,6 @@ public interface AssetRepository extends MongoRepository<Asset, String> {
     @Query("{ 'ticker' : { $regex: '^.*?0.*$', $options: 'i' } }")
     List<Asset> findByTickerRegex(String ticker);
 
+    boolean existsByNameAndTicker(String name, String ticker);
+
 }

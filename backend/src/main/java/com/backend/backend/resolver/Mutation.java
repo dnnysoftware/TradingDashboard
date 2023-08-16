@@ -13,23 +13,27 @@ import com.backend.backend.repository.TradeRepository;
 import com.coxautodev.graphql.tools.GraphQLMutationResolver;
 
 
+
 @Controller
 public class Mutation implements GraphQLMutationResolver {
     
 
     private AssetRepository assetRepository;
     private TradeRepository tradeRepository;
+    private AssetValidator assetValidator;
   
     @Autowired
-    public Mutation(AssetRepository assetRepository, TradeRepository tradeRepository) {
-      this.assetRepository = assetRepository;
-      this.tradeRepository = tradeRepository;
+    public Mutation(AssetRepository assetRepository, TradeRepository tradeRepository, AssetValidator assetValidator) {
+        this.assetRepository = assetRepository;
+        this.tradeRepository = tradeRepository;
+        this.assetValidator = assetValidator;
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
     @MutationMapping
     public Asset createAsset( @Argument String name, @Argument String ticker, @Argument String marketSector, @Argument String assetType, @Argument String stockType) {
         Asset asset = new Asset(name, ticker, marketSector, assetType, stockType);
+        assetValidator.validate(asset, null); 
         return assetRepository.save(asset);
     }
 
