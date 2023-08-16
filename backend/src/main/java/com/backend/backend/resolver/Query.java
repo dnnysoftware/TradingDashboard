@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
+
 import com.backend.backend.model.Asset;
 import com.backend.backend.model.Trade;
 import com.backend.backend.repository.AssetRepository;
@@ -16,7 +18,7 @@ import com.backend.backend.repository.TradeRepository;
 import com.coxautodev.graphql.tools.GraphQLQueryResolver;
 
 
-
+@CrossOrigin
 @Controller
 public class Query implements GraphQLQueryResolver{
 
@@ -37,26 +39,31 @@ public class Query implements GraphQLQueryResolver{
     }
 
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @QueryMapping
     public List<Asset> assetsByName(@Argument String name) {
         return assetRepository.findByNameRegex(name);
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @QueryMapping
     public List<Asset> assetsByTicker(@Argument String ticker) {
         return assetRepository.findByNameRegex(ticker);
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @QueryMapping
     public Optional<Asset> assetById(@Argument String id) {
         return assetRepository.findById(id);
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @QueryMapping
     public List<Trade> tradesAll() {
         return tradeRepository.findAll();
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @QueryMapping
     public List<Trade> tradesYear() {
         updateEpoch();
@@ -64,6 +71,7 @@ public class Query implements GraphQLQueryResolver{
         return tradeRepository.findByTimestampGreaterThan(yearAgo);
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @QueryMapping
     public List<Trade> tradesMonth() {
         updateEpoch();
@@ -71,6 +79,7 @@ public class Query implements GraphQLQueryResolver{
         return tradeRepository.findByTimestampGreaterThan(monthAgo);
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @QueryMapping
     public List<Trade> tradesWeek() {
         updateEpoch();
@@ -78,6 +87,7 @@ public class Query implements GraphQLQueryResolver{
         return tradeRepository.findByTimestampGreaterThan(weekAgo);
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @QueryMapping
     public List<Trade> tradesDay() {
         updateEpoch();
@@ -85,11 +95,13 @@ public class Query implements GraphQLQueryResolver{
         return tradeRepository.findByTimestampGreaterThan(dayAgo);
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @QueryMapping
     public List<Trade> tradesByActive() {
         return tradeRepository.findByActive(true);
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @QueryMapping
     public Float tradesByActiveCalculate() {
         return tradeRepository.calculateSummedValueForActiveTrades();

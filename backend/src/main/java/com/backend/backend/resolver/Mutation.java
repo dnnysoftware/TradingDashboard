@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.backend.backend.model.Asset;
 import com.backend.backend.model.Trade;
@@ -25,12 +26,14 @@ public class Mutation implements GraphQLMutationResolver {
       this.tradeRepository = tradeRepository;
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @MutationMapping
     public Asset createAsset( @Argument String name, @Argument String ticker, @Argument String marketSector, @Argument String assetType, @Argument String stockType) {
         Asset asset = new Asset(name, ticker, marketSector, assetType, stockType);
         return assetRepository.save(asset);
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @MutationMapping
     public Trade createTrade(@Argument float price ,@Argument int amountShares,@Argument String tradeType,@Argument String orderType,@Argument String asset, @Argument boolean active) {
         Trade temp = new Trade(asset);
