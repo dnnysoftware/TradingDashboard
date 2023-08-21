@@ -9,9 +9,11 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.backend.backend.model.Account;
 import com.backend.backend.model.Asset;
+import com.backend.backend.model.Holding;
 import com.backend.backend.model.Trade;
 import com.backend.backend.repository.AccountRepository;
 import com.backend.backend.repository.AssetRepository;
+import com.backend.backend.repository.HoldingRepository;
 import com.backend.backend.repository.TradeRepository;
 import com.coxautodev.graphql.tools.GraphQLMutationResolver;
 
@@ -24,13 +26,15 @@ public class Mutation implements GraphQLMutationResolver {
     private AssetRepository assetRepository;
     private AccountRepository accountRepository;
     private TradeRepository tradeRepository;
+    private HoldingRepository holdingRepository;
     private AssetValidator assetValidator;
   
-    public Mutation(AssetRepository assetRepository, TradeRepository tradeRepository, AssetValidator assetValidator, AccountRepository accountRepository) {
+    public Mutation(AssetRepository assetRepository, TradeRepository tradeRepository, AssetValidator assetValidator, AccountRepository accountRepository, HoldingRepository holdingRepository) {
         this.assetRepository = assetRepository;
         this.tradeRepository = tradeRepository;
         this.assetValidator = assetValidator;
         this.accountRepository = accountRepository;
+        this.holdingRepository = holdingRepository;
     }
 
     // Creation
@@ -59,6 +63,17 @@ public class Mutation implements GraphQLMutationResolver {
         Account account = new Account(name, startingVal, startingVal, startingVal);
         return accountRepository.save(account);
     }
+
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @MutationMapping
+    public Holding createHolding(@Argument String account, @Argument String ticker, @Argument int shares, @Argument float avgPrice) {
+        Holding temp = new Holding(account);
+        Account obj = getAccount(temp);
+        Holding holding = new Holding(obj, ticker, shares, avgPrice);
+        return holdingRepository.save(holding);
+    }
+
 
     // Updation
 
@@ -124,11 +139,47 @@ public class Mutation implements GraphQLMutationResolver {
         }
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
+    @MutationMapping
+    public Holding buySharesToHolding(@Argument String id, @Argument int shares, @Argument float price) {
+
+        Optional<Holding> holdingOptional = holdingRepository.findById(id);
+
+        if (holdingOptional.isPresent()) {
+            Holding holding = holdingOptional.get();
+            holding.buyShares(shares, price);
+            return holdingRepository.save(holding);
+        } else {
+            throw new IllegalArgumentException("Holding not found with ID: " + id);
+        }
+    }
+
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @MutationMapping
+    public Holding sellSharesToHolding(@Argument String id, @Argument int shares, @Argument float price) {
+
+        Optional<Holding> holdingOptional = holdingRepository.findById(id);
+
+        if (holdingOptional.isPresent()) {
+            Holding holding = holdingOptional.get();
+            float profitLoss = holding.sellShares(shares, price);
+            return holdingRepository.save(holding);
+        } else {
+            throw new IllegalArgumentException("Holding not found with ID: " + id);
+        }
+    }
+
 
 
     public Asset getAsset(@Argument Trade trade) {
         return this.assetRepository.findById(trade.getAssetID()).orElseThrow(null);
     }
+
+    public Account getAccount(@Argument Holding account) {
+        return this.accountRepository.findById(account.getAccountId()).orElseThrow(null);
+    }
+
 
 
 }

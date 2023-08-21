@@ -12,8 +12,14 @@ public class Holding {
     private String ticker;
     private int shares;
     private float avgPrice;
+    private String accountId;
+
+    public Holding(String accountId) {
+        this.accountId = accountId;
+    }
 
     public Holding() {
+        
     }
     
     public Holding(Account account, String ticker, int shares, float avgPrice) {
@@ -33,6 +39,14 @@ public class Holding {
 
     public void setAccount(Account account) {
         this.account = account;
+    }
+
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
     }
 
     public String getTicker() {
@@ -58,5 +72,26 @@ public class Holding {
     public void setAvgPrice(float avgPrice) {
         this.avgPrice = avgPrice;
     }
+
+    public void buyShares(int newShares, float newPrice) {
+        float currentPrice = this.avgPrice * this.shares;
+        int totalShares = this.shares + newShares;
+        float totalPrice = newPrice + currentPrice;
+        float newAvg = totalPrice / totalShares;
+        this.avgPrice = newAvg;
+        this.shares = totalShares;
+    }
+
+
+    public float sellShares(int removeShares, float currPrice) {
+        if (removeShares < this.shares) {
+            int newShares = this.shares - removeShares;
+            float profitLoss = removeShares * currPrice;
+            this.shares = newShares;
+            return profitLoss;
+        }
+        return 0;
+    }
+
 
 }

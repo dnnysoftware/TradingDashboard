@@ -10,10 +10,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.backend.backend.model.Asset;
+import com.backend.backend.model.Holding;
 import com.backend.backend.model.Trade;
 import com.backend.backend.model.Account;
 import com.backend.backend.repository.AccountRepository;
 import com.backend.backend.repository.AssetRepository;
+import com.backend.backend.repository.HoldingRepository;
 import com.backend.backend.repository.TradeRepository;
 import com.coxautodev.graphql.tools.GraphQLQueryResolver;
 
@@ -26,12 +28,14 @@ public class Query implements GraphQLQueryResolver{
     private AssetRepository assetRepository;
     private TradeRepository tradeRepository;
     private AccountRepository accountRepository;
+    private HoldingRepository holdingRepository;
     private int currEpochTime;
   
-    public Query(AssetRepository assetRepository, TradeRepository tradeRepository, AccountRepository accountRepository) {
+    public Query(AssetRepository assetRepository, TradeRepository tradeRepository, AccountRepository accountRepository, HoldingRepository holdingRepository) {
         this.accountRepository = accountRepository;
         this.assetRepository = assetRepository;
         this.tradeRepository = tradeRepository;
+        this.holdingRepository = holdingRepository;
         this.currEpochTime = (int) Instant.now().getEpochSecond();
     }
 
@@ -121,6 +125,19 @@ public class Query implements GraphQLQueryResolver{
         return accountRepository.findById(id);
     }
 
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @QueryMapping
+    public Optional<Holding> holdingById(@Argument String id) {
+        return holdingRepository.findById(id);
+    }
+
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @QueryMapping
+    public List<Holding> holdingByTicker(@Argument String ticker) {
+        return holdingRepository.findByTickerRegex(ticker);
+    }
 
 
 }

@@ -13,6 +13,6 @@ extend type Query {
 
 extend type Mutation {
     createHolding(account: String!, ticker: String!, shares: Int!, avgPrice: Float!): Holding!
-    buySharesToHolding(account: String! ticker: String!, shares: Int!, avgPrice: Float!): Holding!
-    sellSharesToHolding(account: String! ticker: String!, shares: Int!, avgPrice: Float!): Holding!
+    buySharesToHolding(account: String!, shares: Int!, price: Float!): Holding!
+    sellSharesToHolding(account: String!, shares: Int!, price: Float!): Holding!
 }
