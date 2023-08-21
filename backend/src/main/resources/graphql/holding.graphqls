@@ -1,0 +1,18 @@
+type Holding {
+    id: ID! 
+    account: Account!
+    ticker: String!
+    shares: Int!
+    avgPrice: Float!
+}
+
+extend type Query {
+    holdingById(id: ID!): Holding!
+    holdingByTicker(account: String!, ticker: String!): [Holding]!
+}
+
+extend type Mutation {
+    createHolding(account: String!, ticker: String!, shares: Int!, avgPrice: Float!): Holding!
+    buySharesToHolding(account: String! ticker: String!, shares: Int!, avgPrice: Float!): Holding!
+    sellSharesToHolding(account: String! ticker: String!, shares: Int!, avgPrice: Float!): Holding!
+}

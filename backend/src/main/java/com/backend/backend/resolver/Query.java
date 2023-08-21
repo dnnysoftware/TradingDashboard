@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Optional;
 import java.time.Instant;
 import com.backend.backend.model.TimeRange;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
@@ -27,7 +25,6 @@ public class Query implements GraphQLQueryResolver{
     private TradeRepository tradeRepository;
     private int currEpochTime;
   
-    @Autowired
     public Query(AssetRepository assetRepository, TradeRepository tradeRepository) {
         this.assetRepository = assetRepository;
         this.tradeRepository = tradeRepository;

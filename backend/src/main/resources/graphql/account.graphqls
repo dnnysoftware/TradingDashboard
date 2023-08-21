@@ -1,0 +1,20 @@
+type Account {
+    id: ID!
+    name: String!
+    balance: Float!
+    cash: Float!
+}
+
+
+extend type Query {
+    accountById(id: ID!): Account!
+    accountByName(name: String!): Account!
+}
+
+
+extend type Mutation {
+    createAccount(name: String!): Account!
+    updateAccount(id: String!, balance: Float!, cash: Float!): Account!
+    addCash(id: String!, amount: Float!): Account!
+    takeOutCash(id: String!, amount: Float!): Account!
+}
