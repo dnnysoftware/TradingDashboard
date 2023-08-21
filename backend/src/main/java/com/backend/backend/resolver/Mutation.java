@@ -148,6 +148,10 @@ public class Mutation implements GraphQLMutationResolver {
         if (holdingOptional.isPresent()) {
             Holding holding = holdingOptional.get();
             holding.buyShares(shares, price);
+            Account acc = holding.getAccount();
+            float amount = shares * price;
+            acc.buyTrade(amount);
+            accountRepository.save(acc);
             return holdingRepository.save(holding);
         } else {
             throw new IllegalArgumentException("Holding not found with ID: " + id);
@@ -164,6 +168,9 @@ public class Mutation implements GraphQLMutationResolver {
         if (holdingOptional.isPresent()) {
             Holding holding = holdingOptional.get();
             float profitLoss = holding.sellShares(shares, price);
+            Account acc = holding.getAccount();
+            acc.sellTrade(profitLoss);
+            accountRepository.save(acc);
             return holdingRepository.save(holding);
         } else {
             throw new IllegalArgumentException("Holding not found with ID: " + id);
