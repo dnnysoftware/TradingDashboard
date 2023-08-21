@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.backend.backend.model.Asset;
 import com.backend.backend.model.Trade;
+import com.backend.backend.model.Account;
+import com.backend.backend.repository.AccountRepository;
 import com.backend.backend.repository.AssetRepository;
 import com.backend.backend.repository.TradeRepository;
 import com.coxautodev.graphql.tools.GraphQLQueryResolver;
@@ -23,9 +25,11 @@ public class Query implements GraphQLQueryResolver{
 
     private AssetRepository assetRepository;
     private TradeRepository tradeRepository;
+    private AccountRepository accountRepository;
     private int currEpochTime;
   
-    public Query(AssetRepository assetRepository, TradeRepository tradeRepository) {
+    public Query(AssetRepository assetRepository, TradeRepository tradeRepository, AccountRepository accountRepository) {
+        this.accountRepository = accountRepository;
         this.assetRepository = assetRepository;
         this.tradeRepository = tradeRepository;
         this.currEpochTime = (int) Instant.now().getEpochSecond();
@@ -104,6 +108,18 @@ public class Query implements GraphQLQueryResolver{
         return tradeRepository.calculateSummedValueForActiveTrades();
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
+    @QueryMapping
+    public Account accountByName(@Argument String name) {
+        return accountRepository.findAccountByName(name);
+    }
+
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @QueryMapping
+    public Optional<Account> accountById(@Argument String id) {
+        return accountRepository.findById(id);
+    }
 
 
 

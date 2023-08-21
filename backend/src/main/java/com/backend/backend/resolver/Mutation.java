@@ -56,7 +56,7 @@ public class Mutation implements GraphQLMutationResolver {
     @MutationMapping
     public Account createAccount(@Argument String name) {
         float startingVal = Float.intBitsToFloat(0);
-        Account account = new Account(name, startingVal, startingVal);
+        Account account = new Account(name, startingVal, startingVal, startingVal);
         return accountRepository.save(account);
     }
 
@@ -70,14 +70,13 @@ public class Mutation implements GraphQLMutationResolver {
     
         if (accountOptional.isPresent()) {
             Account account = accountOptional.get();
-            float currentCash = account.getCash();
-            float newCash = currentCash + amount;
-            account.setCash(newCash);
+            account.addAmount(amount);
             return accountRepository.save(account);
         } else {
             throw new IllegalArgumentException("Account not found with ID: " + id);
         }
     }
+
 
     @CrossOrigin(origins = "http://localhost:3000")
     @MutationMapping
@@ -87,9 +86,38 @@ public class Mutation implements GraphQLMutationResolver {
     
         if (accountOptional.isPresent()) {
             Account account = accountOptional.get();
-            float currentCash = account.getCash();
-            float newCash = currentCash - amount;
-            account.setCash(newCash);
+            account.removeAmount(amount);
+            return accountRepository.save(account);
+        } else {
+            throw new IllegalArgumentException("Account not found with ID: " + id);
+        }
+    }
+
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @MutationMapping
+    public Account updateOnBuyTrade(@Argument String id, @Argument float amount) {
+
+        Optional<Account> accountOptional = accountRepository.findById(id);
+    
+        if (accountOptional.isPresent()) {
+            Account account = accountOptional.get();
+            account.buyTrade(amount);
+            return accountRepository.save(account);
+        } else {
+            throw new IllegalArgumentException("Account not found with ID: " + id);
+        }
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @MutationMapping
+    public Account updateOnSellTrade(@Argument String id, @Argument float amount) {
+
+        Optional<Account> accountOptional = accountRepository.findById(id);
+    
+        if (accountOptional.isPresent()) {
+            Account account = accountOptional.get();
+            account.sellTrade(amount);
             return accountRepository.save(account);
         } else {
             throw new IllegalArgumentException("Account not found with ID: " + id);

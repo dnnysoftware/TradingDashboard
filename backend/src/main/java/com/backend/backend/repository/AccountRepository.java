@@ -6,6 +6,6 @@ import com.backend.backend.model.Account;
 
 public interface AccountRepository extends MongoRepository<Account, String> {
 
-
+    Account findAccountByName(String name);
 
 }

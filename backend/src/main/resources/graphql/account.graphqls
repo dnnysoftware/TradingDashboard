@@ -3,6 +3,7 @@ type Account {
     name: String!
     balance: Float!
     cash: Float!
+    stock: Float!
 }
 
 
@@ -14,7 +15,8 @@ extend type Query {
 
 extend type Mutation {
     createAccount(name: String!): Account!
-    updateAccount(id: String!, balance: Float!, cash: Float!): Account!
+    updateOnBuyTrade(id: String!, amount: Float!): Account!
+    updateOnSellTrade(id: String!, amount: Float!): Account!
     addCash(id: String!, amount: Float!): Account!
     takeOutCash(id: String!, amount: Float!): Account!
 }

@@ -10,16 +10,18 @@ public class Account {
     private String name;
     private float balance;
     private float cash;
+    private float stock;
 
 
     public Account() { 
     }
 
     
-    public Account(String name, float balance, float cash) {
+    public Account(String name, float balance, float cash, float stock) {
         this.name = name;
         this.balance = balance;
         this.cash = cash;
+        this.stock = stock;
     }
 
 
@@ -55,6 +57,48 @@ public class Account {
 
     public void setCash(float cash) {
         this.cash = cash;
+    }
+
+
+    public float getStock() {
+        return stock;
+    }
+
+
+    public void setStock(float stock) {
+        this.stock = stock;
+    }
+
+    public void removeAmount(float amount) {
+        if (this.cash - amount > 0) {
+            this.balance -= amount;
+            this.cash -= amount;
+        }  else {
+            float tempCash = this.cash;
+            this.cash = 0;
+            this.balance -= tempCash;
+        }
+    }
+
+    public void addAmount(float amount) {
+        this.balance += amount;
+        this.cash += amount;
+    }
+
+    public void buyTrade(float amount) {
+        if (amount < this.cash) {
+            this.cash -= amount;
+            this.stock += amount;
+            this.balance = this.cash + this.stock;
+        }
+    }
+
+    public void sellTrade(float amount) {
+        if (amount < this.stock) {
+            this.cash += amount;
+            this.stock -= amount;
+            this.balance = this.cash + this.stock;
+        }
     }
 
     
